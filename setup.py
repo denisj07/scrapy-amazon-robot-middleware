@@ -12,7 +12,7 @@ REQUIREMENTS = [
 setup(
     name='scrapy-amazon-robot-middleware',
     version=version,
-    packages=find_packages(),
+    # packages=find_packages(),
     url='https://github.com/AbdulYahya/scrapy-amazon-robot-middleware',
     license='LICENSE.txt',
     author='Mark Sanders',
