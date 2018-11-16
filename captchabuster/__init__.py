@@ -268,7 +268,7 @@ class RobotMiddleware(object):
             return request.meta.get('original_request').replace(dont_filter=True)
         request.meta['image_request'] = False
         request.meta['captcha_submit'] = True
-        url = form_action + '?' + urllib.urlencode(form_params)
+        url = form_action + '?' + urllib.request.urlopen(form_params)
         return request.replace(url=url, dont_filter=True)
 
     def process_response(self, request, response, spider):
