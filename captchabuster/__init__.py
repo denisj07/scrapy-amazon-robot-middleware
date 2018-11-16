@@ -2,7 +2,7 @@ import urllib
 import os
 import logging
 # from StringIO import StringIO
-from BytesIO import BytesIO
+from io import BytesIO
 from PIL import Image
 import requests
 from collections import defaultdict

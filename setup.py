@@ -6,8 +6,7 @@ REQUIREMENTS = [
     'beautifulsoup4',
     'scrapy',
     'pillow',
-    'requests',
-    'BytesIO'
+    'requests'
 ]
 
 setup(
