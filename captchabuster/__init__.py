@@ -273,7 +273,7 @@ class RobotMiddleware(object):
 
     def process_response(self, request, response, spider):
         captcha = response.xpath("//div[@class='a-alert-content']/ul/li/span[@class='a-list-item']/text()").extract_first()
-        captcha = ''.join([captcha.strip()])
+        # captcha = ''.join([captcha.strip()])
 
         if request.meta.get('crack_retry_count', 0) > self.MAX_RETRY:
             raise IgnoreRequest('Max retries exceeded %s' % request.meta.get('original_request', request))
