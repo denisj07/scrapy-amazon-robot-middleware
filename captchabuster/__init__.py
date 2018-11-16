@@ -190,7 +190,7 @@ def test():
 
     # cb = CaptchaBuster('./%d_captcha.jpg' % t)
     cb = CaptchaBuster(BytesIO(session.get(soup.find('img').get('src')).content))
-    print cb.guess
+    print(cb.guess)
     # print 'Pass %d:' % t, cb.guess
 
 
