@@ -19,5 +19,5 @@ setup(
     author_email='sdscdeveloper@gmail.com',
     install_requires=REQUIREMENTS,
     description='Scrapy middleware module which uses image parsing to submit a captcha response to amazon.',
-    include_package_data=false
+    include_package_data=False
 )
