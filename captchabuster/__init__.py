@@ -60,7 +60,7 @@ class CaptchaBuster(object):
         h = requests.utils.default_headers()
         h['User-Agent'] = session.headers['User-Agent']
         h['Host'] = 'images-na.ssl-images-amazon.com'
-        h['Referer'] = 'https://www.amazon.com/errors/validateCaptcha'
+        h['Referer'] = 'https://www.amazon.de/errors/validateCaptcha'
         if 'https://' not in url:
             url = url.replace('http', 'https')
         io = BytesIO(session.get(url, headers=h).content)
@@ -153,7 +153,7 @@ def crack_from_requests(session, content):
     soup = BeautifulSoup(content)
     form = soup.find('form')
 
-    action = 'http://www.amazon.com' + form.get('action')
+    action = 'http://www.amazon.de' + form.get('action')
     params = {x.get('name'): x.get('value') for x in form.findAll('input')}
 
     url = form.find('img').get('src')
@@ -183,7 +183,7 @@ images = load_images()
 def test():
     # for t in range(5):
     session = requests.Session()
-    response = session.get('http://www.amazon.com/errors/validateCaptcha')
+    response = session.get('http://www.amazon.de/errors/validateCaptcha')
     soup = BeautifulSoup(response.content)
     # with open('./%d_captcha.jpg' % t, 'wb') as f:
     #     f.write(session.get(soup.find('img').get('src')).content)
@@ -237,7 +237,7 @@ class RobotMiddleware(object):
         soup = BeautifulSoup(response.body)
         form = soup.find('form')
 
-        action = 'http://www.amazon.com' + form.get('action')
+        action = 'http://www.amazon.de' + form.get('action')
         params = {x.get('name'): x.get('value') for x in form.findAll('input')}
         url = form.find('img').get('src')
 
