@@ -278,7 +278,7 @@ class RobotMiddleware(object):
         if request.meta.get('crack_retry_count', 0) > self.MAX_RETRY:
             raise IgnoreRequest('Max retries exceeded %s' % request.meta.get('original_request', request))
 
-        if isinstance(response, HtmlResponse) and 'To better protect your account, please re-enter your password and then enter the characters as they are shown in the image below.' in captcha:
+        if isinstance(response, HtmlResponse) and captcha is not None and 'To better protect your account, please re-enter your password and then enter the characters as they are shown in the image below.' in captcha:
             self.cracking = True
             self.crawler.stats.inc_value('robot_check')
             # Log the url of the original request that got blocked
