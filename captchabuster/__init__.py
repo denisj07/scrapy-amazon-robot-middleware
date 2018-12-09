@@ -1,4 +1,6 @@
-import urllib
+import urllib.parse
+
+
 import os
 import logging
 # from StringIO import StringIO
@@ -143,7 +145,7 @@ class CaptchaBuster(object):
         """
         r = 0
         l = len(concordance1)
-        for i in xrange(l):
+        for i in range(l):
             if (not concordance1[i]) and (concordance1[i] == concordance2[i]):
                 r += 5
         return r/float(l)
@@ -160,7 +162,7 @@ def crack_from_requests(session, content):
     cb = CaptchaBuster.from_url(url, session)
     params['field-keywords'] = cb.guess
 
-    url = action + '?' + urllib.urlencode(params)
+    url = action + '?' + urllib.parse.urlencode(params)
     return session.get(url)
 
 
@@ -268,17 +270,22 @@ class RobotMiddleware(object):
             return request.meta.get('original_request').replace(dont_filter=True)
         request.meta['image_request'] = False
         request.meta['captcha_submit'] = True
-        url = form_action + '?' + urllib.request.urlopen(form_params)
+        url = form_action + '?' + urllib.parse.urlencode(form_params)
         return request.replace(url=url, dont_filter=True)
 
     def process_response(self, request, response, spider):
-        captcha = response.xpath("//div[@class='a-alert-content']/ul/li/span[@class='a-list-item']/text()").extract_first()
-        # captcha = ''.join([captcha.strip()])
+        captcha = None
+        if 'amazon' in response.url and not request.meta.get('form_params', False):
+            if not request.meta.get('image_request', False):
+                captcha = response.css('div.a-box.a-alert.a-alert-info.a-spacing-base > div > p::text').extract_first()
+            if captcha:
+                self.logger.warning('found a captcha')
+                self.logger.warning('proxy that has been used: %s', request.meta.get('proxy', 'unknown/none'))
 
         if request.meta.get('crack_retry_count', 0) > self.MAX_RETRY:
             raise IgnoreRequest('Max retries exceeded %s' % request.meta.get('original_request', request))
 
-        if isinstance(response, HtmlResponse) and captcha is not None and 'To better protect your account, please re-enter your password and then enter the characters as they are shown in the image below.' in captcha:
+        if isinstance(response, HtmlResponse) and captcha:
             self.cracking = True
             self.crawler.stats.inc_value('robot_check')
             # Log the url of the original request that got blocked
